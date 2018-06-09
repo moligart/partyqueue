@@ -1,0 +1,121 @@
+{% extends 'partyqueue/base.html' %}
+
+{% block title_test %}{{ title }}{% endblock %}
+
+{% block body_block %}
+	
+	<div class="container-fluid">
+
+		<div class="row search_box">
+			<form action="/add/" method="POST" id="search_form">
+				{% csrf_token %}
+				<div>
+					<input class="search_input" type="text" id="search_text" name="search_text" placeholder="Search..."/>
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				</div>
+			</form>
+		</div>
+
+		<!--
+		<div class="row preview_box">
+			<iframe id="youtube_player" 
+					type="text/html" 
+					src="https://www.youtube.com/embed/ABGiqizwCso?autoplay=1"
+					frameborder="0"
+					class="preview_frame">
+			</iframe>
+		</div>
+		-->
+
+		{% if results_list or music_results %}
+			<div class="row">
+				<h1>Search Results</h1>
+				<ul class="nav nav-tabs">
+					{% if results_list %}
+						<li class="active" id="result_tab"><a data-toggle="tab" href="#vid_results" >Videos</a></li>
+					{% endif %}
+					{% if music_results %}
+						<li class="" id="music_tab"><a data-toggle="tab" href="#mus_results">Music</a></li>
+					{% endif %}
+				</ul>
+				<div class="tab-content">
+					{% if results_list %}
+						<div id="vid_results" class="tab-pane fade in active">
+							{% for result in results_list %}
+								<div class="row result_row">
+									{% if result.id.videoId in already_queued %}
+										{% if result.id.videoId in queued_by_user %}
+											<span class="badge remove" data-videoid="{{ result.id.videoId }}">Remove From Queue</span>
+											{% else %}
+											<span class="badge queued" data-videoid="{{ result.id.videoId }}">In Queue</span>
+										{% endif %}
+									{% else %}
+										<span class="badge" data-videoid="{{ result.id.videoId }}">Add To Queue</span>
+									{% endif %}
+									<div class="col-sm-3 col-md-3 col-lg-3">
+										<img src="{{ result.snippet.thumbnails.medium.url }}"/>
+									</div>
+									<div class="col-sm-8 col-md-8 col-lg-8">
+										<div>
+											<h4>{{ result.snippet.title }}</h4>
+											<span>{{ result.snippet.channelTitle }}</span>
+											<hr/>
+										</div>
+										<div>{{ result.snippet.description }}</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+					{% if music_results %}
+						<div id="mus_results" class="tab-pane fade">
+							{% for result in music_results %}
+								<div class="row result_row">
+									{% if result.id in already_queued %}
+										{% if result.id in queued_by_user %}
+											<span class="badge remove" data-videoid="{{ result.id }}">Remove From Queue</span>
+											{% else %}
+											<span class="badge queued" data-videoid="{{ result.id }}">In Queue</span>
+										{% endif %}
+									{% else %}
+										<span class="badge music" data-videoid="{{ result.id }}">Add To Queue</span>
+									{% endif %}
+									<div class="col-sm-3 col-md-3 col-lg-3">
+										<img src="{{ result.artwork_url }}"/>
+									</div>
+									<div class="col-sm-8 col-md-8 col-lg-8">
+										<div>
+											<h4>{{ result.title }}</h4>
+											<span>{{ result.user.username }}</span>
+											<hr/>
+										</div>
+										<div>{{ result.description }}</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		{% else %}
+			<h1>Search for something first...</h1>
+			<h2 class="taunt">...noob</h2>
+		{% endif %}
+
+	</div> <!-- .inner .cover -->
+
+	<script type="text/javascript">
+		$('span.badge').on('click', function(event){
+		    if ($(this).hasClass('queued')) {return;}
+		    var isMusic = $(this).hasClass('music');
+		    do_post({
+		    	'csrfmiddlewaretoken' : '{{ csrf_token }}',
+		    	'operation' : 'queue',
+		    	'video_id' : $(this).data('videoid'),
+		    	'video_name' : $(this).siblings().find("h4").text(),
+		    	'is_music' : isMusic
+		    }, '/add/', show_success, 'POST');
+		});
+	</script>
+
+{% endblock %}

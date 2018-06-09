@@ -1,0 +1,27 @@
+{% extends 'partyqueue/base.html' %}
+
+{% block body_block %}
+	
+	<div class="inner cover full">
+		<h1 class="cover-heading">Watch!</h1>
+		<p class="lead">Watch queued videos.</p>
+		<p class="lead">
+			<span onclick="launchIntoFullscreen(true, false);" class="btn btn-lg btn-default">Watch!</span>
+		</p>
+	</div> <!-- .inner .cover -->
+
+	<div class="info_box left"> <!-- video info -->
+		<div class="info_header">Now watching...</div>
+		<div class="info_detail">Now watching...</div>
+	</div>
+
+	<div id="youtube_player" class="full" style="position:absolute;top:0;left:0;"></div>
+	<audio src="{{ track_url }}" id="sc_audio" autoplay="true">
+	</audio>
+
+	<script type="text/javascript">
+		var tag, firstScriptTag, player, current_id;
+		var token = '{{ csrf_token }}';
+	</script>
+
+{% endblock %}

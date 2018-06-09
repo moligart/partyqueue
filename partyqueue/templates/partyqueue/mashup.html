@@ -1,0 +1,33 @@
+{% extends 'partyqueue/base.html' %}
+
+{% block title_test %}{{ title }}{% endblock %}
+
+{% block body_block %}
+	
+	<div class="inner cover full">
+		<h1 class="cover-heading">Mashup!</h1>
+		<p class="lead">Play music and video queue simultaneously, with the video portion muted.</p>
+		<p class="lead">
+			<span onclick="launchIntoFullscreen(true, true);" class="btn btn-lg btn-default">Start!</span>
+		</p>
+	</div> <!-- .inner .cover -->
+
+	<div class="info_box left"> <!-- video info -->
+		<div class="info_header">Now watching...</div>
+		<div class="info_detail">Now watching...</div>
+	</div>
+	<div class="info_box right"> <!-- music info -->
+		<div class="info_header">Now Listening To...</div>
+		<div class="info_detail">Now Listening To...</div>
+	</div>
+
+	<div id="youtube_player" class="full" style="position:absolute;top:0;left:0;"></div>
+	<audio src="{{ track_url }}" id="sc_audio" autoplay="true">
+	</audio>
+
+	<script type="text/javascript">
+		var tag, firstScriptTag, player, current_id;
+		var token = '{{ csrf_token }}';
+	</script>
+
+{% endblock %}

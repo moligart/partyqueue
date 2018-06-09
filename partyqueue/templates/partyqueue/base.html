@@ -1,0 +1,65 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>PartyTools{% block title_test %}{% endblock %}</title>
+
+    	<script src="{% static 'js/jquery-2.2.4.min.js' %}"></script>
+    	<script src="{% static 'js/main.js' %}"></script>
+
+    	<!-- Bootstrap -->
+    	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+    	<link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}"/>
+    	<link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+    </head>
+
+    <body>
+
+    	<div class="wrapper">
+    		<div class="wrapper-inner">
+    			<div class="masthead clearfix">
+					<div class="inner">
+						<h3 class="masthead-brand"><a href="/">PartyTools</a></h3>
+						<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						<span>
+						<nav class="toggled">
+							<ul class="nav masthead-nav">
+								<li><a href="/">Home</a></li>
+								<li><a href="/all">Queue</a></li>
+								<li><a href="/add">Explore</a></li>
+								<li><a href="/watch">Watch</a></li>
+								<li><a href="/listen">Listen</a></li>
+								<li><a href="/mashup">Mashup</a></li>
+								<li>
+									<form action="/add/" method="POST" id="search_form">
+										{% csrf_token %}
+										<div>
+											<input class="search_input" type="text" id="search_text" name="search_text" placeholder="Search..."/>
+											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</nav>
+					</div> <!-- .inner -->
+				</div> <!-- .masthead -->
+    			<div class="cover-container container-fluid">
+					<!-- template content -->
+					{% block body_block %}{% endblock %}
+					<!-- end template content -->
+
+					<div class="mastfoot">
+			        </div> <!-- .mastfoot -->
+    			</div> <!-- .cover-container -->
+    		</div> <!-- .wrapper-inner -->
+    	</div> <!-- .wrapper -->
+
+        <!-- core js -->
+    	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    </body>
+</html>

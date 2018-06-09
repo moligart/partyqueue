@@ -1,0 +1,32 @@
+{% extends 'partyqueue/base.html' %}
+
+{% block title_test %}{{ title }}{% endblock %}
+
+{% block body_block %}
+	
+	<div class="inner">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Id</th>
+					<th>Time Placed In Queue</th>
+					<th>Play Order</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in queue_items %}
+					<tr>
+						<td>{{ item.item_name }}</td>
+						<td>{{ item.item_type }}</td>
+						<td>{{ item.item_id }}</td>
+						<td>{{ item.queued_time }}</td>
+						<td>{{ item.place_in_line }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div> <!-- .inner .cover -->
+
+{% endblock %}
